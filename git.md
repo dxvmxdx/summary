@@ -4,7 +4,8 @@
    1-1. [git 초기화와 삭제](#1-1-git-초기화와-삭제)  
    1-2. [add](#1-2-add)  
    1-3. [commit](#1-3-commit)  
-   1-4. [diff](#1-4-diff)
+   1-4. [diff](#1-4-diff)  
+   1-5. [checkout](#1-5-checkout)
 
 <br>
 <br>
@@ -85,3 +86,19 @@ git diff 해시코드 해시코드 파일명
 <br>
 <br>
 <br>
+
+## 1-5. checkout
+
+브랜치를 전환하거나 modified를 최신 커밋 상태로 복원할 때 사용한다.  
+최신 git 버전에서, 브랜치 전환은 `switch`로 파일 복원은 `restore`로 사용을 권장한다.
+
+```shell
+git checkout main # git switch main
+git checkout <commit> # 해당 버전으로 HEAD 이동
+# 브랜치 생성 후 이동
+git checkout -b <브랜치명> # git switch -C <브랜치명>
+
+git checkout -- <파일명> # git restore <파일명>
+```
+
+\*`HEAD`: 지금 바라보고 있는 버전을 가리킨다.
