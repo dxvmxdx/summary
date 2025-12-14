@@ -6,7 +6,8 @@
    1-3. [commit](#1-3-commit)  
    1-4. [diff](#1-4-diff)  
    1-5. [checkout](#1-5-checkout)  
-   1-6. [log](#1-6-log)
+   1-6. [log](#1-6-log)  
+   1-7. [tag](#1-7-tag)
 
 <br>
 <br>
@@ -58,7 +59,7 @@ git mv from.text /logs/from.text
 
 ```shell
 git commit # staged 파일
-git commit -m "commit message"
+git commit -m <msg>
 ```
 
 <br>
@@ -120,4 +121,32 @@ git log -p <파일명> # 해당 파일이 포함된 버전 각각의 정보와 �
 # git show: 최신 커밋의 정보와 변경사항을 보여준다.
 git show <commit>
 git show <commit> <파일명>
+```
+
+<br>
+<br>
+<br>
+
+## 1-7. tag
+
+보통 릴리즈할 때 사용하며, 특정 버전에 태그를 추가해 관리할 수 있다.
+
+```shell
+# 조회
+git tag # 모든 태그 목록
+git tag -l "v1.0.*" # 와일드카드를 사용하여 태그 목록 검색
+
+# 추가 (annotated 방식 권장)
+git tag <name> # lightweight 방식
+git tag -a <name> <commit>
+git tag -a <name> -m <msg>
+
+# 삭제
+git tag -d <name>
+
+# remote
+# 자동으로 remote에 태그를 전송하지 않으므로, 별도로 push 해줘야 한다.
+git push origin <name>
+git push origin --tags # 모든 태그
+git push origin -d <name> # 삭제
 ```
