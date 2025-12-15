@@ -7,7 +7,8 @@
    1-4. [diff](#1-4-diff)  
    1-5. [checkout](#1-5-checkout)  
    1-6. [log](#1-6-log)  
-   1-7. [tag](#1-7-tag)
+   1-7. [tag](#1-7-tag)  
+   1-8. [stash](#1-8-stash)
 
 <br>
 <br>
@@ -149,4 +150,30 @@ git tag -d <name>
 git push origin <name>
 git push origin --tags # 모든 태그
 git push origin -d <name> # 삭제
+```
+
+<br>
+<br>
+<br>
+
+## 1-8. stash
+
+modified이면서 tracked 상태인 파일과 staging area에 있는 파일들을 저장할 수 있다.
+
+```shell
+git stash
+git stash --keep-index # modified이면서 tracked 상태인 파일만 저장
+git stash -u # untracked 상태의 파일까지 저장
+git stash list # 목록 확인
+
+# 적용
+git stash apply # 최근 stash (스택에는 남아있음)
+git stash pop # 최근 stash (스택에서 사라짐)
+git stash apply <stash>
+git stash apply --index # staged 상태까지 적용
+git stash branch <branch> # 브랜치를 생성하고 stash 적용 후 삭제
+
+# 삭제
+git stash drop <stash>
+git stash clear # 전부 삭제
 ```
