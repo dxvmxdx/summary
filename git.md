@@ -9,6 +9,8 @@
    1-6. [log](#1-6-log)  
    1-7. [tag](#1-7-tag)  
    1-8. [stash](#1-8-stash)
+2. [Branch](#2-branch)  
+   2-1. [merge](#2-1-merge)
 
 <br>
 <br>
@@ -176,4 +178,45 @@ git stash branch <branch> # 브랜치를 생성하고 stash 적용 후 삭제
 # 삭제
 git stash drop <stash>
 git stash clear # 전부 삭제
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 2. Branch
+
+```shell
+git branch # 목록 확인
+git branch <name> # 생성
+git branch -d <name> # 삭제
+
+git switch <브랜치명> # 이동
+git switch -C <브랜치명> # 브랜치 생성 후 이동
+```
+
+<br>
+<br>
+<br>
+
+## 2-1. merge
+
+```shell
+git merge <branch>
+```
+
+<br>
+
+### 💥 conflict 해결
+
+conflict가 발생한 파일에서 수동으로 해결 후 이어 진행한다.
+
+```shell
+git add <파일명>
+git merge --continue
+
+# 또는 되돌릴 수도 있다.
+git merge --abort
 ```
