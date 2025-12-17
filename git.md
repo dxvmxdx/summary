@@ -10,7 +10,8 @@
    1-7. [tag](#1-7-tag)  
    1-8. [stash](#1-8-stash)
 2. [Branch](#2-branch)  
-   2-1. [merge](#2-1-merge)
+   2-1. [merge](#2-1-merge)  
+   2-2. [rebase](#2-2-rebase)
 
 <br>
 <br>
@@ -219,4 +220,78 @@ git merge --continue
 
 # 또는 되돌릴 수도 있다.
 git merge --abort
+```
+
+<br>
+<br>
+<br>
+
+## 2-2. rebase
+
+rebase를 이용하면 깔끔한 히스토리 관리를 할 수 있다.  
+다음과 같은 상황에서 merge하게 되면 3-way merge가 되는데, rebase를 이용해 좀 더 깔끔한 히스토리를 만들 수 있다.
+
+```
+          A---B---C topic
+         /
+    D---E---F---G main
+```
+
+먼저, topic 브랜치를 main 브랜치로 rebase 한다.
+
+```shell
+git switch topic
+git rebase main
+```
+
+```
+                  A'--B'--C' topic
+                 /
+    D---E---F---G main
+```
+
+이제 main 브랜치에 merge 한다.
+
+```shell
+git switch main
+git merge topic
+git branch -d topic
+```
+
+<br>
+
+> ⚠️ rebase된 커밋은 기존 커밋과 다르므로, 이미 서버에 push된 커밋은 rebase 하면 안된다.
+
+<br>
+
+### --onto 옵션
+
+```
+    o---o---o---o---o  main
+         \
+          o---o---o---o---o  next
+                           \
+                            o---o---o  topic
+```
+
+위 상황에서 topic 브랜치만 main 브랜치에 merge하고 싶을 때, `--onto` 옵션을 사용하면 된다.
+
+```shell
+git rebase --onto main next topic
+```
+
+```
+    o---o---o---o---o  main
+        |            \
+        |             o'--o'--o'  topic
+         \
+          o---o---o---o---o  next
+```
+
+이후 main 브랜치에 merge 한다.
+
+```shell
+git switch main
+git merge topic
+git branch -d topic
 ```
