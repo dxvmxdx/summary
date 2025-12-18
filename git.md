@@ -11,7 +11,8 @@
    1-8. [stash](#1-8-stash)
 2. [Branch](#2-branch)  
    2-1. [merge](#2-1-merge)  
-   2-2. [rebase](#2-2-rebase)
+   2-2. [rebase](#2-2-rebase)  
+   2-3. [cherry-pick](#2-3-cherry-pick)
 
 <br>
 <br>
@@ -294,4 +295,24 @@ git rebase --onto main next topic
 git switch main
 git merge topic
 git branch -d topic
+```
+
+<br>
+<br>
+<br>
+
+## 2-3. cherry-pick
+
+다른 브랜치에 있는 특정 커밋의 변경사항을 가져와, 현재 HEAD가 가리키는 브랜치에 추가한다.
+
+```shell
+git cherry-pick <commit>
+```
+
+```
+              Q--R
+             /
+    A---B---C---D  main
+         \
+          X---Y---Z---R'
 ```
