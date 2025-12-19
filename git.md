@@ -13,6 +13,8 @@
    2-1. [merge](#2-1-merge)  
    2-2. [rebase](#2-2-rebase)  
    2-3. [cherry-pick](#2-3-cherry-pick)
+3. [undo](#3-undo)  
+   3-1. [file](#3-1-file)
 
 <br>
 <br>
@@ -315,4 +317,39 @@ git cherry-pick <commit>
     A---B---C---D  main
          \
           X---Y---Z---R'
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 3. Undo
+
+> ⚠️ 이미 서버에 push된 커밋은 수정하면 안된다.
+
+<br>
+
+## 3-1. file
+
+```shell
+# 최근 커밋 상태로 초기화
+git reset --hard HEAD
+
+# 모든 untracked 삭제
+git clean -fd
+
+# modified >> unmodified (staged된 부분은 제외)
+git restore .
+git restore <파일명> # git checkout -- <파일명>
+
+# staged >> unstaged
+git restore --staged .
+git restore --staged <파일명>
+git reset HEAD .
+git reset HEAD <파일명>
+
+# 파일을 특정 커밋의 내용으로 복원
+git restore --source=<commit> <파일명>
 ```
