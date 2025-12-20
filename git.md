@@ -14,7 +14,8 @@
    2-2. [rebase](#2-2-rebase)  
    2-3. [cherry-pick](#2-3-cherry-pick)
 3. [undo](#3-undo)  
-   3-1. [file](#3-1-file)
+   3-1. [file](#3-1-file)  
+   3-2. [commit](#3-2-commit)
 
 <br>
 <br>
@@ -353,3 +354,46 @@ git reset HEAD <파일명>
 # 파일을 특정 커밋의 내용으로 복원
 git restore --source=<commit> <파일명>
 ```
+
+<br>
+<br>
+<br>
+
+## 3-2. commit
+
+### --amend (최근 커밋 수정)
+
+> ⚠️ 수정된 커밋은 기존 커밋과 다르다.
+
+```shell
+# 수정 후
+git add .
+git commit --amend
+
+# 커밋 메시지 수정
+git commit --amend -m
+```
+
+<br>
+
+### reset
+
+특정 커밋으로 되돌린다.
+
+| 옵션                        | HEAD | staging area | working directory |
+| --------------------------- | :--: | :----------: | :---------------: |
+| `git reset --soft <commit>` | YES  |      NO      |        NO         |
+| `git reset <commit>`        | YES  |     YES      |        NO         |
+| `git reset --hard <commit>` | YES  |     YES      |        YES        |
+
+<br>
+
+> 📋 **reflog**  
+> HEAD가 가리키는 커밋이 바뀔 때마다 Git은 자동으로 그 커밋이 무엇인지 기록한다.  
+> `git reflog` 명령어로 그 이력을 확인할 수 있다.
+>
+> 이를 이용하여 reset한 커밋을 복구할 수 있다.
+>
+> ```shell
+> git reset --hard <commit>
+> ```
