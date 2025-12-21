@@ -397,3 +397,19 @@ git commit --amend -m
 > ```shell
 > git reset --hard <commit>
 > ```
+
+<br>
+
+### revert
+
+특정 커밋의 변경사항을 되돌리는 커밋을 생성한다.
+
+> 💡reset은 기록을 남기지 않지만 revert는 기록을 남긴다. 따라서 서버에 push된 경우 revert를 사용하는 것이 좋다.
+
+```shell
+git revert <commit>
+
+# 변경사항이 staged 상태가 되고 커밋되지 않음.
+git revert --no-commit <commit>
+git commit -m 'revert한 이유'
+```
