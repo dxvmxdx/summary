@@ -413,3 +413,16 @@ git revert <commit>
 git revert --no-commit <commit>
 git commit -m 'revert한 이유'
 ```
+
+<br>
+
+### interactive rebase
+
+`git rebase` 명령에 `-i` 옵션을 추가하면 대화형 모드로 rebase 할 수 있다.  
+이를 이용해서 커밋 히스토리를 수정할 수 있다. (수정, 삭제, 순서바꾸기, 합치기, 분할)
+
+```shell
+git rebase -i <commit> # 수정할 커밋의 직전 커밋
+```
+
+[공식문서](https://git-scm.com/book/ko/v2/Git-%EB%8F%84%EA%B5%AC-%ED%9E%88%EC%8A%A4%ED%86%A0%EB%A6%AC-%EB%8B%A8%EC%9E%A5%ED%95%98%EA%B8%B0.html#_changing_multiple)
