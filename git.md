@@ -16,6 +16,9 @@
 3. [undo](#3-undo)  
    3-1. [file](#3-1-file)  
    3-2. [commit](#3-2-commit)
+4. [remote](#4-remote)  
+   4-1. [push](#4-1-push)  
+   4-2. [fetch와 pull](#4-2-fetch와-pull)
 
 <br>
 <br>
@@ -426,3 +429,47 @@ git rebase -i <commit> # 수정할 커밋의 직전 커밋
 ```
 
 [공식문서](https://git-scm.com/book/ko/v2/Git-%EB%8F%84%EA%B5%AC-%ED%9E%88%EC%8A%A4%ED%86%A0%EB%A6%AC-%EB%8B%A8%EC%9E%A5%ED%95%98%EA%B8%B0.html#_changing_multiple)
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 4. remote
+
+```shell
+git remote # 연결된 remote 목록 확인
+git remote -v # +URL
+git remote add <name> <URL> # 추가
+git remote remove <name> # 제거
+
+# clone
+git clone <URL> <directory>
+```
+
+<br>
+<br>
+<br>
+
+## 4-1. push
+
+```shell
+git push <remote> <branch>
+git push -u <remote> <branch> # tracking (git push, git pull)
+```
+
+<br>
+<br>
+<br>
+
+## 4-2. fetch와 pull
+
+```shell
+git fetch # remote 최신 변경 사항 다운로드
+git fetch <remote>
+
+git pull # fetch + merge
+git pull <remote> <branch>
+git pull --rebase
+```
