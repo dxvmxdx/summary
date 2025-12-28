@@ -3,7 +3,8 @@
 1. [box model](#1-box-model)
 2. [속성](#2-속성)  
    2-1. [position](#2-1-position)  
-   2-2. [flexbox](#2-2-flexbox)
+   2-2. [flexbox](#2-2-flexbox)  
+   2-3. [grid](#2-3-grid)
 
 <br>
 <br>
@@ -126,3 +127,108 @@
 - `align-self`  
   개별 item의 정렬 지정.  
   _auto, flex-start, flex-end, center, baseline, stretch_
+
+<br>
+<br>
+<br>
+
+## 2-3. grid
+
+[참고 사이트](https://css-tricks.com/css-grid-layout-guide/)
+
+<br>
+
+### container에 지정하는 속성
+
+- `display`  
+  _grid, inline-grid_
+
+- `grid-template-columns`  
+  열의 크기를 정의
+
+- `grid-template-rows`  
+  행의 크기를 정의
+
+  ```css
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 100px);
+  }
+  ```
+
+- `grid-template-areas`  
+  지정된 그리드 영역 이름(`grid-area`)을 참조해 그리드 템플릿을 생성한다.
+
+  ```css
+  .container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 100px);
+    grid-template-areas:
+      'header header header'
+      'main main aside'
+      'footer footer footer';
+  }
+  header {
+    grid-area: header;
+  }
+  main {
+    grid-area: main;
+  }
+  aside {
+    grid-area: aside;
+  }
+  footer {
+    grid-area: footer;
+  }
+  ```
+
+- `justify-content`  
+  그리드 컨텐츠 수평 정렬.
+
+- `align-content`  
+  그리드 컨텐츠 수직 정렬.
+
+- `justify-items`  
+  그리드 아이템들 수평 정렬.  
+  아이템의 가로 너비가 자신이 속한 그리드 열의 크기보다 작아야 적용된다.
+
+- `align-items`  
+  그리드 아이템들 수직 정렬.  
+  아이템의 세로 너비가 자신이 속한 그리드 행의 크기보다 작아야 적용된다.
+
+- `gap`
+
+  ```css
+  .container {
+    gap: <row-gap> <column-gap>;
+  }
+  ```
+
+<br>
+
+### item에 지정하는 속성
+
+- `grid-row-start`, `grid-row-end`, `grid-column-start`, `grid-column-end`  
+  아이템의 시작위치와 끝위치를 지정할 수 있다.
+
+- `grid-row`  
+  `grid-row-start` / `grid-row-end` 단축속성
+
+- `grid-column`  
+  `grid-column-start` / `grid-column-end` 단축속성
+
+- `grid-area`  
+  `grid-row-start` / `grid-column-start` / `grid-row-end` / `grid-column-end` 단축속성  
+  혹은, `grid-template-areas`가 참조할 영역 이름을 설정할 수도 있다.
+
+- `justify-self`  
+  아이템 수평 정렬.  
+  아이템의 가로 너비가 자신이 속한 그리드 열의 크기보다 작아야 적용된다.
+
+- `align-self`  
+  아이템 수직 정렬.  
+  아이템의 세로 너비가 자신이 속한 그리드 행의 크기보다 작아야 적용된다.
+
+- `order`  
+  기본값 0
