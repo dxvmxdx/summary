@@ -5,6 +5,7 @@
    2-1. [position](#2-1-position)  
    2-2. [flexbox](#2-2-flexbox)  
    2-3. [grid](#2-3-grid)
+3. [정렬](#3-정렬)
 
 <br>
 <br>
@@ -232,3 +233,60 @@
 
 - `order`  
   기본값 0
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 3. 정렬
+
+### block element
+
+```css
+.box {
+  margin: auto;
+}
+```
+
+<br>
+
+### inline element
+
+```css
+/* 부모 요소(block) */
+.parent {
+  text-align: center;
+}
+
+/* 수직 정렬 */
+.child {
+  height: 100%;
+  line-height: 100px; /* 부모 요소 height */
+}
+```
+
+<br>
+
+### 중앙 정렬
+
+```css
+/* flex */
+.parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* transform */
+.parent {
+  position: relative;
+}
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+```
