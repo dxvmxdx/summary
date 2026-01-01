@@ -3,6 +3,8 @@
 1. [변수](#1-변수)  
    1-1. [Data Type](#1-1-data-type)  
    1-2. [const](#1-2-const)
+2. [연산자](#2-연산자)  
+   2-1. [논리연산자](#2-1-논리연산자)
 
 <br>
 <br>
@@ -43,4 +45,38 @@ const bob = {
   name: 'bob',
   age: 19,
 };
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 2. 연산자
+
+## 2-1. 논리연산자
+
+`&&`: 모든 피연산자가 `true`일 경우 `true`, 그렇지 않으면 `false` 반환  
+`||`: 하나 이상이 `true`면 `true`, 그렇지 않으면 `false` 반환  
+`!`: truthy를 `false`로, falsy를 `true`로 반환  
+`x ?? y`: x가 `null` 또는 `undefined`일 때 y 반환, 그렇지 않으면 x 반환
+
+<br>
+
+### 단락 평가
+
+표현식을 평가하는 도중에 2번째 피연산자까지 평가하지 않아도 결과가 확정된 경우, 나머지 평가 과정을 생략하는 것.
+
+```js
+// x && y
+// x 값이 falsy면 x 반환, 그렇지 않으면 y 값 반환
+// 💡 조건이 truthy일 때 && 실행할 코드
+const userName = user && user.name;
+
+// x || y
+// x 값이 truthy면 x 반환, 그렇지 않으면 y 반환
+// 💡 조건이 falsy일 때 || 실행할 코드
+let name = '';
+const user = name || '방문자';
 ```
