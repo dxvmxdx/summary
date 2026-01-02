@@ -4,7 +4,8 @@
    1-1. [Data Type](#1-1-data-type)  
    1-2. [const](#1-2-const)
 2. [연산자](#2-연산자)  
-   2-1. [논리연산자](#2-1-논리연산자)
+   2-1. [논리연산자](#2-1-논리연산자)  
+   2-2. [옵셔널 체이닝 ?.](#2-2-옵셔널-체이닝)
 
 <br>
 <br>
@@ -79,4 +80,22 @@ const userName = user && user.name;
 // 💡 조건이 falsy일 때 || 실행할 코드
 let name = '';
 const user = name || '방문자';
+```
+
+<br>
+<br>
+<br>
+
+## 2-2. 옵셔널 체이닝
+
+`x?.prop`: x 값이 nullish(`null` 또는 `undefined`)면 `undefined`를 반환하고, 그렇지 않으면 `obj.prop` 값 반환.
+
+> ⚠️ obj 값이 선언되어 있지 않으면 에러가 발생하므로, obj 값이 반드시 존재하고 prop가 필수값이 아닌 경우에 사용해야 한다.
+
+```js
+const customer = {
+  name: 'Carl',
+  details: { age: 82 },
+};
+const customerCity = customer?.city ?? 'Unknown city';
 ```
