@@ -6,6 +6,8 @@
 2. [연산자](#2-연산자)  
    2-1. [논리연산자](#2-1-논리연산자)  
    2-2. [옵셔널 체이닝 ?.](#2-2-옵셔널-체이닝)
+3. [제어문](#3-제어문)  
+   3-1. [switch](#3-1-switch)
 
 <br>
 <br>
@@ -98,4 +100,40 @@ const customer = {
   details: { age: 82 },
 };
 const customerCity = customer?.city ?? 'Unknown city';
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 3. 제어문
+
+## 3-1. switch
+
+#### 실행순서
+
+① 표현식 평가  
+② 결과값과 일치하는 case문으로 이동  
+③ break문을 만나면 switch문 종료, 만나지 못하면 다음 case문 실행
+
+```js
+const expr = 'Papayas';
+
+switch (expr) {
+  case 'Oranges':
+    console.log('Oranges are $0.59 a pound.');
+    break;
+  case 'Mangoes':
+  case 'Papayas':
+    console.log('Mangoes and papayas are $2.79 a pound.');
+  // break;
+  default:
+    console.log(`Sorry, we are out of ${expr}.`);
+}
+
+// Expected output:
+// "Mangoes and papayas are $2.79 a pound."
+// "Sorry, we are out of Papayas."
 ```
