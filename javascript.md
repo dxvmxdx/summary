@@ -8,6 +8,8 @@
    2-2. [옵셔널 체이닝 ?.](#2-2-옵셔널-체이닝)
 3. [제어문](#3-제어문)  
    3-1. [switch](#3-1-switch)
+4. [함수](#4-함수)  
+   4-1. [parameter](#4-1-parameter)
 
 <br>
 <br>
@@ -136,4 +138,48 @@ switch (expr) {
 // Expected output:
 // "Mangoes and papayas are $2.79 a pound."
 // "Sorry, we are out of Papayas."
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 4. 함수
+
+## 4-1. parameter
+
+> 매개변수(parameter): 전달된 데이터를 할당받아 함수 내부에서 사용할 수 있는 <u>변수</u>.  
+> 인수(argument): 함수 호출 시 매개변수에 전달된 <u>값</u>.
+
+<br>
+
+### default parameters
+
+함수의 매개변수는 `undefined`가 기본으로 설정된다. 매개변수에 아무 값도 주지 않으면 `undefined`가 되므로 기본값을 설정해주면 된다.
+
+```js
+function multiply(a, b = 1) {
+  return a * b;
+}
+
+multiply(5); // 5
+```
+
+<br>
+
+### rest parameters
+
+매개변수 이름 앞에 `...`을 붙여 정의한 매개변수로, 먼저 선언된 파라미터에 할당된 인수를 제외한 나머지 인수들의 목록을 배열로 받는다.
+
+> ⚠️ 마지막에 위치해야 한다.
+
+```js
+function multiply(multiplier, ...theArgs) {
+  return theArgs.map((x) => multiplier * x);
+}
+
+const arr = multiply(2, 1, 2, 3);
+console.log(arr); // [2, 4, 6]
 ```
