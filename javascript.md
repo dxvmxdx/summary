@@ -9,7 +9,8 @@
 3. [제어문](#3-제어문)  
    3-1. [switch](#3-1-switch)
 4. [함수](#4-함수)  
-   4-1. [parameter](#4-1-parameter)
+   4-1. [parameter](#4-1-parameter)  
+   4-2. [callback](#4-2-callback-function)
 
 <br>
 <br>
@@ -183,3 +184,21 @@ function multiply(multiplier, ...theArgs) {
 const arr = multiply(2, 1, 2, 3);
 console.log(arr); // [2, 4, 6]
 ```
+
+<br>
+<br>
+<br>
+
+## 4-2. callback function
+
+다른 함수의 argument로 전달된 함수.
+
+```js
+function doSomething(callback) {
+  setTimeout(callback, 0);
+}
+```
+
+<br>
+
+> 고차함수: 함수를 반환하거나 다른 함수를 argument로 받는 함수.
