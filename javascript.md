@@ -11,6 +11,7 @@
 4. [함수](#4-함수)  
    4-1. [parameter](#4-1-parameter)  
    4-2. [callback](#4-2-callback-function)
+5. [클래스](#5-클래스)
 
 <br>
 <br>
@@ -202,3 +203,29 @@ function doSomething(callback) {
 <br>
 
 > 고차함수: 함수를 반환하거나 다른 함수를 argument로 받는 함수.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 5. 클래스
+
+객체를 생성하기 위한 템플릿.
+
+```js
+class Fruit {
+  // 생성자 함수: new 키워드로 인스턴스를 생성할 때 (자동으로) 호출되는 함수
+  constructor(name, emoji) {
+    this.name = name;
+    this.emoji = emoji;
+  }
+
+  display() {
+    console.log(`${this.name}: ${this.emoji}`);
+  }
+}
+
+const apple = new Fruit('apple', '🍎');
+```
