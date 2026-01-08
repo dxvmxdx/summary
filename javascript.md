@@ -11,7 +11,8 @@
 4. [함수](#4-함수)  
    4-1. [parameter](#4-1-parameter)  
    4-2. [callback](#4-2-callback-function)
-5. [클래스](#5-클래스)
+5. [클래스](#5-클래스)  
+   5-1. [static](#5-1-static)
 
 <br>
 <br>
@@ -228,4 +229,39 @@ class Fruit {
 }
 
 const apple = new Fruit('apple', '🍎');
+```
+
+<br>
+<br>
+<br>
+
+## 5-1. static
+
+프로퍼티와 메서드 앞에 `static` 키워드를 붙이면, 클래스에 정의하고 재사용할 수 있다.  
+클래스의 인스턴스에서는 접근•호출할 수 없다.
+
+> 💡 클래스에 공통적으로 사용하거나 인스턴스 데이터에 참조할 필요가 없을때, 사용할 수 있다.
+
+```js
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  // 정적 프로퍼티
+  static displayName = 'Point';
+  // 정적 메소드
+  static distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+
+    return Math.hypot(dx, dy);
+  }
+}
+
+const p1 = new Point(5, 5);
+const p2 = new Point(10, 10);
+Point.displayName;
+Point.distance(p1, p2);
 ```
