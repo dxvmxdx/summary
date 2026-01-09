@@ -12,7 +12,8 @@
    4-1. [parameter](#4-1-parameter)  
    4-2. [callback](#4-2-callback-function)
 5. [클래스](#5-클래스)  
-   5-1. [static](#5-1-static)
+   5-1. [static](#5-1-static)  
+   5-2. [field](#5-2-field)
 
 <br>
 <br>
@@ -264,4 +265,67 @@ const p1 = new Point(5, 5);
 const p2 = new Point(10, 10);
 Point.displayName;
 Point.distance(p1, p2);
+```
+
+<br>
+<br>
+<br>
+
+## 5-2. field
+
+클래스가 생성할 인스턴스 프로퍼티
+
+<br>
+
+### public field
+
+```js
+class Fruit {
+  // constructor에서 초기화하면 생략 가능
+  // name;
+  // emoji;
+  type = '과일';
+
+  constructor(name, emoji) {
+    this.name = name;
+    this.emoji = emoji;
+  }
+}
+
+const apple = new Fruit('apple', '🍎');
+console.log(apple);
+// Expected output:
+// Fruit {
+//   type: '과일',
+//   display: [Function: display],
+//   name: 'apple',
+//   emoji: '🍎'
+// }
+```
+
+<br>
+
+### private field
+
+`#` 접두사를 사용하여, 클래스 내부에서만 접근 가능하고 외부에서 접근하지 못하게 막는다.
+
+```js
+class Person {
+  #name;
+
+  constructor(name) {
+    this.#name = name;
+  }
+
+  #display() {
+    console.log(`이름: ${this.#name}`);
+  }
+
+  show() {
+    this.#display();
+  }
+}
+
+const person = new Person('Alice');
+person.show();
 ```
