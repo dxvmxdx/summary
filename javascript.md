@@ -13,7 +13,8 @@
    4-2. [callback](#4-2-callback-function)
 5. [클래스](#5-클래스)  
    5-1. [static](#5-1-static)  
-   5-2. [field](#5-2-field)
+   5-2. [field](#5-2-field)  
+   5-3. [getter & setter](#5-3-getter--setter-접근자-프로퍼티)
 
 <br>
 <br>
@@ -328,4 +329,45 @@ class Person {
 
 const person = new Person('Alice');
 person.show();
+```
+
+<br>
+<br>
+<br>
+
+## 5-3. getter & setter (접근자 프로퍼티)
+
+> ⚠️ 데이터 프로퍼티명과 접근자 프로퍼티명을 다르게 설정해야 한다.
+
+```js
+class User {
+  #name;
+  #age;
+
+  constructor(name, age) {
+    this.#name = name;
+    this.#age = age;
+  }
+
+  get name() {
+    console.log(`사용자의 이름은 ${this.#name}입니다.`);
+  }
+
+  get age() {
+    console.log(`사용자의 나이는 ${this.#age}입니다.`);
+  }
+
+  set age(newAge) {
+    if (newAge < 0) {
+      console.log('입력하신 숫자가 0 미만입니다. 다시 설정해주세요.');
+      return;
+    }
+    this.#age = newAge;
+  }
+}
+
+const snow = new User('설윤', 20);
+snow.name;
+snow.age = -2;
+snow.age;
 ```
