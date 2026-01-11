@@ -14,7 +14,8 @@
 5. [클래스](#5-클래스)  
    5-1. [static](#5-1-static)  
    5-2. [field](#5-2-field)  
-   5-3. [getter & setter](#5-3-getter--setter-접근자-프로퍼티)
+   5-3. [getter & setter](#5-3-getter--setter-접근자-프로퍼티)  
+   5-4. [상속](#5-4-상속)
 
 <br>
 <br>
@@ -370,4 +371,41 @@ const snow = new User('설윤', 20);
 snow.name;
 snow.age = -2;
 snow.age;
+```
+
+<br>
+<br>
+<br>
+
+## 5-4. 상속
+
+`extends` 키워드로 다른 클래스를 상속받을 수 있다.
+
+```js
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+
+  speak() {
+    console.log(`${this.name} makes a noise.`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name) {
+    super(name); // super(...): 부모 클래스의 생성자 함수 호출
+  }
+
+  speak() {
+    super.speak(); // super.method(); 부모 클래스에서 정의한 메서드 호출
+    console.log(`${this.name} barks.`);
+  }
+}
+
+const mitzie = new Dog('Mitzie');
+mitzie.speak();
+// Expected output:
+// "Mitzie makes a noise."
+// "Mitzie barks."
 ```
