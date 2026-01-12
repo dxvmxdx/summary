@@ -16,6 +16,8 @@
    5-2. [field](#5-2-field)  
    5-3. [getter & setter](#5-3-getter--setter-접근자-프로퍼티)  
    5-4. [상속](#5-4-상속)
+6. [내장 객체](#6-내장-객체)  
+   6-1. [Date](#6-1-date)
 
 <br>
 <br>
@@ -408,4 +410,34 @@ mitzie.speak();
 // Expected output:
 // "Mitzie makes a noise."
 // "Mitzie barks."
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 6. 내장 객체
+
+## 6-1. Date
+
+```js
+new Date();
+new Date(1997, 0, 1, 21, 30, 0);
+
+// 문자열
+new Date().toLocaleString('ko-KR'); // "2026. 1. 12. 오후 2:41:59"
+```
+
+<br>
+
+```js
+// 1970년 1월 1일 00:00:00(UTC)을 기점으로 현재 시간까지 경과한 밀리초를 숫자로 반환
+Date.now();
+
+// 밀리초 -> Date
+new Date(Date.now());
+// Date -> 밀리초
+Date.parse(new Date());
 ```
