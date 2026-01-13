@@ -18,6 +18,8 @@
    5-4. [상속](#5-4-상속)
 6. [내장 객체](#6-내장-객체)  
    6-1. [Date](#6-1-date)
+7. [Iterable](#7-iterable)  
+   7-1. [spread](#7-1-spread)
 
 <br>
 <br>
@@ -440,4 +442,36 @@ Date.now();
 new Date(Date.now());
 // Date -> 밀리초
 Date.parse(new Date());
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 7. Iterable
+
+순회가 가능한 객체로, `for...of`, `spread` 연산자를 사용할 수 있다.
+
+<br>
+
+## 7-1. spread
+
+spread 문법(`...`)은 iterable를 각 개별 item으로 분리한다.
+
+```js
+// function argument
+function sum(x, y, z) {
+  return x + y + z;
+}
+const numbers = [1, 2, 3];
+sum(...numbers);
+
+// array
+const arr = [1, 2, 3];
+const copy = [...arr];
+
+// 객체 리터럴도 적용되도록 추가되었다. (ECMAScript 2018)
+{ ...{ x: 1, y: 2 }, y: 100 }; // { x: 1, y: 100 }
 ```
