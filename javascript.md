@@ -20,6 +20,7 @@
    6-1. [Date](#6-1-date)
 7. [Iterable](#7-iterable)  
    7-1. [spread](#7-1-spread)
+8. [Destructuring](#8-destructuring)
 
 <br>
 <br>
@@ -474,4 +475,40 @@ const copy = [...arr];
 
 // 객체 리터럴도 적용되도록 추가되었다. (ECMAScript 2018)
 { ...{ x: 1, y: 2 }, y: 100 }; // { x: 1, y: 100 }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 8. Destructuring
+
+배열이나 객체를 destructuring해 개별 변수에 할당하는 것
+
+```js
+// 배열
+const [a, b, ...rest] = [10, 20, 30, 40, 50];
+console.log(a); // 10
+console.log(b); // 20
+console.log(rest); // [30, 40, 50]
+
+// 객체
+const john = { name: 'john', age: 20, job: 's/w' };
+const { name, age, job: occupation, pet = '강아지' } = john;
+console.log(occupation); // 's/w'
+
+// 중첩된 객체 구조분해할당
+const person = {
+  name: 'Lee',
+  address: {
+    zipCode: '03068',
+    city: 'Seoul',
+  },
+};
+const {
+  address: { city },
+} = person;
+console.log(city); // 'Seoul'
 ```
