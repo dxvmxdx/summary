@@ -21,6 +21,7 @@
 7. [Iterable](#7-iterable)  
    7-1. [spread](#7-1-spread)
 8. [Destructuring](#8-destructuring)
+9. [모듈](#9-모듈)
 
 <br>
 <br>
@@ -511,4 +512,92 @@ const {
   address: { city },
 } = person;
 console.log(city); // 'Seoul'
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 9. 모듈
+
+## 9-1. export
+
+변수나 함수, 클래스를 선언할 때 앞에 `export` 키워드를 붙이면 내보낼 수 있다.
+
+```js
+export const name = 'square';
+
+export function draw(ctx, length, x, y, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, length, length);
+
+  return { length, x, y, color };
+}
+```
+
+또는 모듈 파일의 끝에 한번에 내보낼 수도 있다.
+
+```js
+export { name, draw };
+```
+
+`as`를 이용해 이름을 바꿔서 내보낼 수도 있다.
+
+```js
+export { name as squareName };
+```
+
+<br>
+<br>
+<br>
+
+## 9-2. import
+
+`export` 된 이름을 `import`로 가져올 수 있다.
+
+```js
+import { name, draw } from './square.js';
+```
+
+한꺼번에 다 가져올 수도 있다.
+
+```js
+import * as square from './square.js';
+
+console.log(square.name);
+```
+
+`as`를 이용해 이름을 바꿔서 가져올 수도 있다.
+
+```js
+import { name as squareName } from './square.js';
+```
+
+<br>
+<br>
+<br>
+
+## 9-3. default export
+
+대표적으로 export 할 것이 있거나 하나만 export 할 때 `export default`를 사용한다.
+
+```js
+export default function (user) {
+  // 이름이 없어도 됨.
+  console.log(`Hello, ${user}!`);
+}
+```
+
+```js
+import greeting from './myModule.js'; // 중괄호 생략 가능
+
+console.log(greeting('john'));
+```
+
+default export와 named exports를 동시에 가져올 수 있다.
+
+```js
+import React, { Component, Fragment } from 'react';
 ```
