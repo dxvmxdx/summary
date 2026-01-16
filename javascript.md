@@ -22,6 +22,7 @@
    7-1. [spread](#7-1-spread)
 8. [Destructuring](#8-destructuring)
 9. [모듈](#9-모듈)
+10. [비동기](#10-비동기)
 
 <br>
 <br>
@@ -600,4 +601,31 @@ default export와 named exports를 동시에 가져올 수 있다.
 
 ```js
 import React, { Component, Fragment } from 'react';
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 10. 비동기
+
+자바스크립트는 싱글 스레드 기반의 언어로, 한번에 하나의 작업만 수행한다. "동기"  
+그렇지만 host 환경에서 제공하는 API를 통해서 비동기적으로 코드를 수행할 수 있다.
+
+```js
+function execute() {
+  console.log(1);
+  setTimeout(() => {
+    console.log(2);
+  }, 3000);
+  console.log(3);
+}
+
+execute();
+// Expected output:
+// 1
+// 3
+// 2 (3초 후 실행)
 ```
