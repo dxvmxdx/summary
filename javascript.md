@@ -22,7 +22,8 @@
    7-1. [spread](#7-1-spread)
 8. [Destructuring](#8-destructuring)
 9. [모듈](#9-모듈)
-10. [비동기](#10-비동기)
+10. [비동기](#10-비동기)  
+    10-1. [Promise](#10-1-promise)
 
 <br>
 <br>
@@ -628,4 +629,43 @@ execute();
 // 1
 // 3
 // 2 (3초 후 실행)
+```
+
+<br>
+<br>
+<br>
+
+## 10-1. Promise
+
+콜백 방식의 비동기 처리가 갖는 문제점(콜백헬, 에러처리한계)을 극복하기 위해 Promise가 제안됨.
+
+The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.  
+Promise 객체는 비동기 작업의 완료(또는 실패)와 그 결과 값을 나타냅니다.
+
+<br>
+
+### 프로미스 객체 생성
+
+프로미스 생성자 함수는 콜백함수(executor)를 인수로 받는다. 이 콜백함수는 인수로 `resolve` 함수와 `reject` 함수를 받는다.
+
+executor는 내부에서 비동기 처리 작업을 수행한다. 이때 비동기 작업이 끝나면 `resolve` 함수를 호출하고, 에러가 발생하면 `reject` 함수를 호출한다.
+
+- `resolve(value)`  
+  비동기 처리 결과를 인수로 전달
+- `reject(error)`  
+  에러 객체를 인수로 전달
+
+프로미스는 3가지 상태 정보를 갖는데, 처음엔 '**pending**' 상태였다가  
+비동기 처리가 성공하면(resolve 함수 호출) '**fulfilled**' 상태가 되고,  
+실패하면(reject 함수 호출) '**rejected**' 상태가 된다.
+
+```js
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('hello');
+  }, 3000);
+});
+
+p.then(console.log); // 3초 뒤 hello 출력
+console.log(p); // pending 상태의 Promise 객체 출력
 ```
