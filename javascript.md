@@ -669,3 +669,59 @@ const p = new Promise((resolve, reject) => {
 p.then(console.log); // 3초 뒤 hello 출력
 console.log(p); // pending 상태의 Promise 객체 출력
 ```
+
+<br>
+
+### 후속 처리 메소드
+
+프로미스 객체의 결과값을 사용해 추가작업을 하려면 `then`, `catch`, `finally` 메소드를 호출하면 된다.
+
+#### then()
+
+두 개의 콜백함수를 인수로 받는다.  
+첫번째 콜백함수는 성공 시 호출되며 인수로 성공 결과를 받고, 두번째 콜백함수는 실패 시 호출되며 인수로 에러객체를 받는다. (그렇지만 가독성을 위해 `catch()` 메소드 사용 권장)
+
+`then()` 메소드는 새로운 프로미스 객체를 반환한다. 이때 콜백함수에서 반환한 값이 프로미스 객체의 결과값이 된다. (콜백함수에서 반환한 값이 프로미스라면 그 프로미스를 그대로 반환한다.)
+
+```js
+const p = new Promise((resolve, reject) => {
+  resolve('Success!');
+});
+
+p.then(console.log); // 'Success!'
+```
+
+#### catch()
+
+실패 시 호출되며, 새로운 프로미스 객체를 반환한다. (콜백함수에서 반환한 값이 프로미스라면 그 프로미스를 그대로 반환한다.)
+
+```js
+const p = new Promise((resolve, reject) => {
+  throw new Error('Uh-oh!');
+});
+
+const result = p.catch((error) => console.log(error.message)); // Uh-oh!
+setTimeout(() => console.log(result), 3000); // Promise { undefined } ‼️
+```
+
+#### finally()
+
+프로미스의 결과에 관계없이 실행될 콜백을 등록하며, 이전 프로미스 결과값이 전달되지 않는다.  
+새로운 프로미스 객체를 반환하며, 원래 프로미스의 최종 상태를 변경하지 않는다.  
+(⚠️ `finally` 콜백 내 예외가 발생하거나 rejected 프로미스를 반환하는 경우에는, 그 값을 가진 rejected 프로미스 객체를 반환한다.)
+
+```js
+function checkMail() {
+  return new Promise((resolve, reject) => {
+    resolve('Mail has arrived');
+  });
+}
+
+checkMail()
+  .then((response) => response)
+  .catch(console.error)
+  .finally(() => {
+    console.log('Experiment completed');
+  })
+  .then((result) => console.log(result)); // Mail has arrived
+```
