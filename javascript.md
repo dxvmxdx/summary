@@ -23,7 +23,8 @@
 8. [Destructuring](#8-destructuring)
 9. [모듈](#9-모듈)
 10. [비동기](#10-비동기)  
-    10-1. [Promise](#10-1-promise)
+    10-1. [Promise](#10-1-promise)  
+    10-2. [async](#10-2-async)
 
 <br>
 <br>
@@ -724,4 +725,68 @@ checkMail()
     console.log('Experiment completed');
   })
   .then((result) => console.log(result)); // Mail has arrived
+```
+
+<br>
+<br>
+<br>
+
+## 10-2. async
+
+함수 앞에 `async` 키워드를 붙이면 비동기 함수가 되고, 프로미스를 반환한다.  
+async 함수 내에서 `await` 키워드를 쓸 수 있는데, **`await` 뒤에 오는 프로미스를 반환하는 비동기 작업이 완료될**까지 async 함수의 실행을 중단시킨다.
+
+```js
+function resolveAfter2Seconds() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('resolved');
+    }, 2000);
+  });
+}
+
+async function asyncCall() {
+  console.log('calling');
+  const result = await resolveAfter2Seconds();
+  console.log(result);
+  // Expected output: "resolved"
+}
+
+asyncCall() //
+  .then(console.log); // undefined
+```
+
+<br>
+
+### 에러 핸들링
+
+`try ... catch` 를 이용해 처리한다.
+
+```js
+function fetchEgg(chicken) {
+  return Promise.resolve(`${chicken} => 🥚`);
+}
+
+function fryEgg(egg) {
+  return Promise.resolve(`${egg} => 🍳`);
+}
+
+function getChicken() {
+  return Promise.reject(new Error('치킨을 가지고 올 수 없음!'));
+  // return Promise.resolve(`🪴 => 🐓`);
+}
+
+async function makeFriedEgg() {
+  let chicken;
+  try {
+    chicken = await getChicken();
+  } catch {
+    chicken = '🐔';
+  }
+  const egg = await fetchEgg(chicken);
+  return fryEgg(egg);
+}
+
+makeFriedEgg() //
+  .then(console.log);
 ```
