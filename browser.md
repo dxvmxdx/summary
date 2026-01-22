@@ -3,6 +3,7 @@
 1. [DOM (document object model)](#1-dom)  
    1-1. [조작](#1-1-조작)  
    1-2. [Critical Rendering Path](#1-2-critical-rendering-path)
+2. [Size](#2-size)
 
 <br>
 <br>
@@ -74,3 +75,37 @@ DOM과 CSSOM이 완료되면 브라우저는 렌더 트리를 생성합니다. �
 > 💡 일괄적으로 업데이트하고 박스모델 속성을 animating하지 않는다. [css 속성 확인 참고 사이트](https://www.lmame-geek.com/css-triggers/)
 
 레이아웃이 완료되면 페이지는 화면에 'Paint'됩니다. 처음 로드시, 전체 화면을 그린다. 그 후에는 브라우저가 필요한 최소 영역만을 다시 그리도록 최적화되어 있기 때문에 영향을 받는 영역만 화면에 다시 그린다.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 2. Size
+
+```js
+// 사용자 모니터 크기
+window.screen.width;
+window.screen.height;
+
+// 브라우저 전체 크기
+window.outerWidth;
+window.outerHeight;
+
+// 브라우저 document 크기 (스크롤 포함)
+window.innerWidth;
+window.innerHeight;
+
+// 브라우저 document 크기 (스크롤 제외)
+document.documentElement.clientWidth;
+document.documentElement.clientHeight;
+```
+
+<br>
+
+### Element.getBoundingClientRect()
+
+요소의 크기 및 위치 정보를 제공하는 객체 반환
+
+<img src="https://developer.mozilla.org/ko/docs/Web/API/Element/getBoundingClientRect/element-box-diagram.png" width=500 />
