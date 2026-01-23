@@ -4,6 +4,8 @@
    1-1. [조작](#1-1-조작)  
    1-2. [Critical Rendering Path](#1-2-critical-rendering-path)
 2. [Size](#2-size)
+3. [Event](#3-event)  
+   3-1. [종류](#3-1-종류)
 
 <br>
 <br>
@@ -109,3 +111,26 @@ document.documentElement.clientHeight;
 요소의 크기 및 위치 정보를 제공하는 객체 반환
 
 <img src="https://developer.mozilla.org/ko/docs/Web/API/Element/getBoundingClientRect/element-box-diagram.png" width=500 />
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 3. Event
+
+## 3-1. 종류
+
+- keyup vs keydown  
+  한국어 같은 언어일 경우 keyup을 쓰는 것이 좋다
+
+- DOMContentLoaded  
+  html 문서가 로드되면 이벤트 발생
+
+- load  
+  리소스(스타일시트, 이미지, 폰트, ...)가 모두 로드되면 이벤트 발생
+
+- beforeunload  
+  페이지를 나갈 때 이벤트 발생  
+  (사용자에게 실제로 페이지를 떠날 것인지 묻는 확인 대화 상자를 표시할 수 있다)
