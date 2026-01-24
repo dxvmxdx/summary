@@ -5,7 +5,9 @@
    1-2. [Critical Rendering Path](#1-2-critical-rendering-path)
 2. [Size](#2-size)
 3. [Event](#3-event)  
-   3-1. [종류](#3-1-종류)
+   3-1. [종류](#3-1-종류)  
+   3-2. [이벤트 객체](#3-2-이벤트-객체)  
+   3-3. [이벤트 버블링](#3-3-이벤트-버블링)
 
 <br>
 <br>
@@ -134,3 +136,61 @@ document.documentElement.clientHeight;
 - beforeunload  
   페이지를 나갈 때 이벤트 발생  
   (사용자에게 실제로 페이지를 떠날 것인지 묻는 확인 대화 상자를 표시할 수 있다)
+
+<br>
+<br>
+<br>
+
+## 3-2. 이벤트 객체
+
+### target vs currentTarget
+
+`event.target`: 이벤트가 발생한 요소  
+`event.currentTarget`: 이벤트가 바인딩된 요소
+
+<br>
+<br>
+<br>
+
+## 3-3. 이벤트 버블링
+
+이벤트가 발생하면, 발생한 요소에 바인딩된 핸들러가 동작하고 이어서 부모 요소의 핸들러가 동작한다.(**같은 이벤트 종류에 한하여**)  
+가장 최상단의 조상 요소를 만날 때까지 이 과정이 반복되면서 요소 각각에 할당된 핸들러가 동작한다.
+
+```html
+<body>
+  <div id="container">
+    <button>Click me!</button>
+  </div>
+  <pre id="output"></pre>
+</body>
+```
+
+```js
+const container = document.querySelector('#container');
+const button = document.querySelector('button');
+const output = document.querySelector('#output');
+
+function handleClick(e) {
+  output.textContent += `You clicked on a ${e.currentTarget.tagName} element\n`;
+}
+
+document.body.addEventListener('click', handleClick);
+container.addEventListener('click', handleClick);
+button.addEventListener('click', handleClick);
+
+// 버튼 클릭 시
+// Expected output:
+// You clicked on a BUTTON element
+// You clicked on a DIV element
+// You clicked on a BODY element
+```
+
+<br>
+
+한 요소에 이벤트 핸들러를 여러 개 추가하면 등록한 순서대로 동작한다.
+
+```js
+button.addEventListener('click', handleClick1); // 1
+button.addEventListener('click', handleClick2); // 2
+```
