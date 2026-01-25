@@ -25,6 +25,7 @@
 10. [비동기](#10-비동기)  
     10-1. [Promise](#10-1-promise)  
     10-2. [async](#10-2-async)
+11. [Scope](#11-scope)
 
 <br>
 <br>
@@ -789,4 +790,24 @@ async function makeFriedEgg() {
 
 makeFriedEgg() //
   .then(console.log);
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 11. Scope
+
+식별자(변수, 함수, 클래스 이름)가 유효한 범위.
+
+```js
+let y = 0;
+// 코드 블럭 안의 변수는 그 안에서만 유효
+{
+  let y = 1;
+  console.log(y); // 1
+}
+console.log(y); // 0
 ```
