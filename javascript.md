@@ -26,7 +26,8 @@
     10-1. [Promise](#10-1-promise)  
     10-2. [async](#10-2-async)
 11. [Scope](#11-scope)  
-    11-1. [렉시컬 환경](#11-1-렉시컬-환경)
+    11-1. [렉시컬 환경](#11-1-렉시컬-환경)  
+    11-2. [Closure](#11-2-closure)
 
 <br>
 <br>
@@ -825,3 +826,28 @@ console.log(y); // 0
 
 - 환경 레코드: 현재 스코프에 정의된 모든 변수와 함수 선언을 저장하는 객체.
 - 외부 렉시컬 환경에 대한 참조: 상위 렉시컬 환경의 참조값 (💡외부 변수에 접근할 수 있게 된다.)
+
+<br>
+<br>
+<br>
+
+## 11-2. Closure
+
+클로저는 함수와 그 함수가 선언됐을 때의 렉시컬 환경과의 조합이다.
+
+클로저는 함수가 선언될 당시의 렉시컬 환경을 기억하고 있어, 자신이 선언됐을 때의 환경 밖에서 호출되어도 그 환경에 접근할 수 있다.
+
+```js
+function counter() {
+  let count = 0; // private
+  function increse() {
+    count++;
+    console.log(count);
+  }
+  return increse;
+}
+
+const increse1 = counter();
+const increse2 = counter();
+console.log(increse1 === increse2); // false
+```
