@@ -27,7 +27,8 @@
     10-2. [async](#10-2-async)
 11. [Scope](#11-scope)  
     11-1. [렉시컬 환경](#11-1-렉시컬-환경)  
-    11-2. [Closure](#11-2-closure)
+    11-2. [Closure](#11-2-closure)  
+    11-3. [Hoisting](#11-3-hoisting)
 
 <br>
 <br>
@@ -851,3 +852,19 @@ const increse1 = counter();
 const increse2 = counter();
 console.log(increse1 === increse2); // false
 ```
+
+<br>
+<br>
+<br>
+
+## 11-3. Hoisting
+
+인터프리터가 코드를 실행하기 전에 변수, 함수, 클래스 또는 `import`의 선언문을 해당 scope의 맨 위로 끌어올리는 것처럼 보이는 현상.
+
+🔍  
+코드 실행 전 렉시컬환경이 생성되고 렉시컬환경의 환경레코드에 식별자 정보가 저장되는데, 이때문에 실행 전 식별자 정보를 알게 된다.
+
+함수 선언문으로 선언한 함수는 선언과 동시에 생성되며, `var` 로 선언된 변수는 `undefined`으로 할당되나,  
+`let`과 `const`로 할당된 변수, 그리고 class는 uninitialized 상태다. (메모리 공간만 잡아둠)
+
+때문에 함수 선언문으로 선언된 함수와 `var`로 선언된 변수는 선언 이전에 호출해도 에러가 발생하지 않지만, 함수표현식으로 선언된 함수와 class, `let`, `const`로 선언된 변수는 참조할 메모리 값이 없으므로 호출 시 에러가 발생한다.
