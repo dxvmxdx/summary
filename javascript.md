@@ -880,8 +880,63 @@ console.log(increse1 === increse2); // false
 
 함수 호출 방식에 따라 this에 바인딩 되는 객체가 **동적**으로 결정된다.
 
-1. 일반 함수를 호출할 때 함수 내부의 `this`는 전역 객체(`globalThis`)를 가리킨다.  
+1. 일반 함수를 호출할 때 함수 내부의 `this`는 전역 객체(브라우저-window, 노드-globalThis)를 가리킨다.  
    (strict mode 경우 undefined)
 
-2. 메소드로 호출 시 메소드 내부의 `this`는 해당 메소드를 호출한 객체(클래스 또는 생성자 함수라면 인스턴스)를 가리킨다.  
-   (⚠️ 만약 메소드를 화살표함수로 정의한 경우, 함수 선언 시점의 상위 컨텍스트의 `this`를 가리킨다.)
+2. 메소드로 호출 시 메소드 내부의 `this`는 해당 메소드를 호출한 객체를 가리킨다.
+
+   ```js
+   const foo = {
+     a: 20,
+     bar() {
+       console.log(this.a);
+     },
+   };
+
+   foo.bar(); // 20
+   setTimeout(foo.bar, 1); // undefined
+   ```
+
+3. 생성자함수 또는 클래스로 생성한 객체 메서드로 호출 시, 메서드 내부의 `this`는 인스턴스를 가리킨다.
+   ```js
+   class C {
+     a = 1;
+     autoBoundMethod = () => {
+       console.log(this.a);
+     };
+   }
+   const c = new C();
+   c.autoBoundMethod(); // 1
+   const { autoBoundMethod } = c;
+   autoBoundMethod(); // 1
+   ```
+
+<br>
+
+### 화살표함수 내부의 this
+
+함수 선언 시점의 상위 컨텍스트의 `this`를 가리킨다.
+
+```js
+const foo = {
+  a: 20,
+  bar() {
+    setTimeout(() => {
+      console.log(this.a);
+    }, 1);
+  },
+};
+foo.bar(); // 20
+```
+
+```js
+const obj = {
+  getThisGetter() {
+    const getter = () => this;
+    return getter;
+  },
+};
+
+const fn = obj.getThisGetter();
+console.log(fn() === obj); // true
+```
