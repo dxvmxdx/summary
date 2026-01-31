@@ -30,6 +30,8 @@
     11-2. [Closure](#11-2-closure)  
     11-3. [Hoisting](#11-3-hoisting)
 12. [this 바인딩](#12-this-바인딩)
+13. [자바스크립트 동작 원리](#13-자바스크립트-동작-원리)  
+    13-1. [자바스크립트 엔진](#13-1-자바스크립트-엔진)
 
 <br>
 <br>
@@ -940,3 +942,21 @@ const obj = {
 const fn = obj.getThisGetter();
 console.log(fn() === obj); // true
 ```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 13. 자바스크립트 동작 원리
+
+## 13-1. 자바스크립트 엔진
+
+자바스크립트 엔진은 자바스크립트 코드를 실행하는 프로그램 또는 인터프리터이다.  
+엔진의 주요 구성 요소로는 memory heap과 call stack이 있다.
+
+- memory heap  
+  참조 타입의 데이터가 할당되는 메모리 영역
+- call stack  
+  코드가 실행되며 생성되는 실행 컨텍스트를 저장하는 자료구조. (LIFO)
