@@ -980,15 +980,7 @@ console.log(fn() === obj); // true
 
 ## 13-2. 런타임
 
-자바스크립트 엔진은 싱글 쓰레드 기반으로 한 번에 하나의 작업만 처리한다. 그러나 런타임 환경(브라우저, Node.js)은 멀티 쓰레드를 갖고 있어서 멀티쓰레딩이 가능하다.
+자바스크립트 엔진은 싱글 스레드 기반으로 한 번에 하나의 작업만 처리한다. (동기)  
+그러나 자바스크립트가 구동되는 환경 즉, 자바스크립트 런타임 환경(브라우저, Node.js)에서 지원하는 APIs로 비동기 처리를 할 수 있다.
 
-\*runtime: 코드가 실행되는 환경
-
-#### process와 thread
-
-- process: 독립적으로 메모리에서 실행되고 있는 프로그램
-- thread: 프로세스 내에서 실행되는 작업 흐름의 단위
-
-#### Multithreading
-
-한 프로세스 내에서 여러 쓰레드가 동시 다발적으로 일어나는 것
+<img width="600" height="400" alt="js_browser_runtime" src="https://github.com/user-attachments/assets/c64fff80-6bd1-41e3-86ea-e57bc07e4b9e" />
