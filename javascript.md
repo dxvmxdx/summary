@@ -984,3 +984,21 @@ console.log(fn() === obj); // true
 그러나 자바스크립트가 구동되는 환경 즉, 자바스크립트 런타임 환경(브라우저, Node.js)에서 지원하는 APIs로 비동기 처리를 할 수 있다.
 
 <img width="600" height="400" alt="js_browser_runtime" src="https://github.com/user-attachments/assets/c64fff80-6bd1-41e3-86ea-e57bc07e4b9e" />
+
+<br>
+
+#### Event Loop
+
+콜스택에 현재 실행중인 컨텍스트가 있는지, 콜백 큐에 대기 중인 콜백 함수가 있는지 주기적으로 관찰한다.  
+콜스택이 비어 있으면 콜백 큐에서 대기 중인 콜백 함수를 순서에 맞춰 콜스택에 push한다.
+
+#### Callback Queue
+
+비동기 작업이 완료된 후 실행될 콜백 함수가 대기하는 큐 (FIFO)
+
+- Microtask Queue  
+  `promise.then`, `process.nextTick`, `MutationObserver` 와 같이 비동기로 처리되는 함수들의 콜백 함수가 들어가는 큐
+- Animation Frames  
+  `requestAnimationFrame()` 에 등록한 콜백 함수가 들어가는 큐
+- Task Queue  
+  `setTimeout`, `setInterval`, `fetch`, `addEventListener` 와 같이 비동기로 처리되는 함수들의 콜백 함수가 들어가는 큐
