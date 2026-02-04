@@ -1002,3 +1002,15 @@ console.log(fn() === obj); // true
   `requestAnimationFrame()` 에 등록한 콜백 함수가 들어가는 큐
 - Task Queue  
   `setTimeout`, `setInterval`, `fetch`, `addEventListener` 와 같이 비동기로 처리되는 함수들의 콜백 함수가 들어가는 큐
+
+<br>
+
+### 비동기 코드 실행 순서
+
+비동기 함수가 호출되면,  
+① 콜스택에 쌓이고 web api에 실행 요청을 보냄  
+② 비동기 함수는 콜스택에서 제거됨  
+③ 콜스택의 다음 함수 실행  
+④ 백그라운드에서 web api 작업이 완료되면 이벤트 루프가 실행될 콜백 함수를 콜백 큐에 전달  
+⑤ 콜스택이 비게 되면, 이벤트 루프가 콜백 큐에서 대기 중인 콜백 함수를 콜스택에 push  
+⑥ 콜스택에 넘겨진 콜백 함수가 실행
