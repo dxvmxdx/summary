@@ -32,7 +32,8 @@
 12. [this 바인딩](#12-this-바인딩)
 13. [자바스크립트 동작 원리](#13-자바스크립트-동작-원리)  
     13-1. [자바스크립트 엔진](#13-1-자바스크립트-엔진)  
-    13-2. [런타임](#13-2-런타임)
+    13-2. [런타임](#13-2-런타임)  
+    13-3. [이벤트 루프 동작 방식](#13-3-이벤트-루프-동작-방식)
 
 <br>
 <br>
@@ -1014,3 +1015,84 @@ console.log(fn() === obj); // true
 ④ 백그라운드에서 web api 작업이 완료되면 이벤트 루프가 실행될 콜백 함수를 콜백 큐에 전달  
 ⑤ 콜스택이 비게 되면, 이벤트 루프가 콜백 큐에서 대기 중인 콜백 함수를 콜스택에 push  
 ⑥ 콜스택에 넘겨진 콜백 함수가 실행
+
+<br>
+<br>
+<br>
+
+## 13-3. 이벤트 루프 동작 방식
+
+🔄순회하다가 (한바퀴 도는데 1ms도 안 걸림)
+
+- 16.7ms 이내에서 렌더링 작업을 업데이트 한다. (1초당 60프레임(1프레임 = 16.7ms)이 보여지면 애니메이션이 부드럽게 움직이는 것처럼 보인다.)  
+  animation frames 큐의 콜백함수가 다 없어질 때까지 머물고, 렌더링 작업을 마무리한다.
+  다시 순회한다.
+
+- 마이크로태스크 큐에 콜백함수가 다 없어질 때까지 마이크로태스크 큐에 머물러 있는다.  
+  만약, 콜스택에 넘겨진 콜백함수(A)가 끝나기 전에 마이크로태스크 큐에 또 다른 콜백함수(B)가 추가된다면 A함수가 끝나면 바로 B함수가 실행이 된다.  
+  다시 순회한다.
+
+- 태스크 큐에 있는 콜백함수 1️⃣개를 콜스택에 추가한다.  
+  다시 순회한다.
+
+#### 실행 순서 예제
+
+```js
+console.log('Start');
+
+setTimeout(() => {
+  console.log('Timeout');
+}, 0);
+
+Promise.resolve() //
+  .then(() => {
+    console.log('Promise1');
+  })
+  .then(() => {
+    console.log('Promise2');
+  });
+
+requestAnimationFrame(() => {
+  console.log('animation frames');
+});
+
+console.log('End');
+
+// Expected output:
+// Start
+// End
+// Promise1
+// Promise2
+// animation frames
+// Timeout
+```
+
+```js
+async function fetchData() {
+  console.log(1);
+  await Promise.resolve();
+  console.log(2);
+}
+
+fetchData();
+console.log(3);
+
+// Expected output:
+// 1
+// 3
+// 2
+```
+
+<br>
+
+> ⚠️ 콜백함수 내 DOM 요소의 스타일 또는 위치를 변경시키는 코드는 브라우저에 바로 적용되지 않는다.  
+> (<u>콜백함수가 다 끝난 후 렌더링 작업이 일어나므로</u>)
+
+```js
+const button = document.querySelector('button');
+const box = document.querySelector('box');
+button.addEventListener('click', (e) => {
+  box.style.backgroundColor = 'pink'; // pink 색깔로 바뀌는게 보이지 않음
+  box.style.backgroundColor = 'orange'; // 브라우저에는 orange로 바뀌는것만 보임
+});
+```
