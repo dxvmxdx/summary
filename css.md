@@ -49,11 +49,13 @@
 
 - absolute  
   요소를 일반적인 문서 흐름에서 제거.  
-  position 속성값이 `static`이 아닌 가장 가까운 부모를 기준으로 이동. (없는 경우 `<html>` 기준)
+  position 속성값이 `static`이 아닌 가장 가까운 부모를 기준으로 이동. (없는 경우 `<html>` 기준)  
+  ⚠️ 요소의 `display` 속성값이 `inline-block`으로 변경됨.
 
 - fixed  
   요소를 일반적인 문서 흐름에서 제거.  
-  브라우저를 기준으로 이동.
+  브라우저를 기준으로 이동.  
+  ⚠️ 요소의 `display` 속성값이 `inline-block`으로 변경됨.
 
 - sticky  
   요소를 일반적인 문서 흐름에 따라 배치.  
