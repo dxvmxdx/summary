@@ -110,24 +110,24 @@
 - `order`  
   기본값 0
 
-- `flex-grow`  
+- `flex-grow`(메인축)  
   기본값 0  
   container 내부에서 할당 가능한 공간의 정도를 지정.  
   item 모두 동일한 값을 갖는다면, container 내에서 동일한 공간을 할당받는다.
 
-- `flex-shrink`  
+- `flex-shrink`(메인축)  
   기본값 1  
   item의 크기가 container 크기보다 클 때, 설정된 값에 따라 축소된다.  
   값을 0으로 설정하면 item 요소 크기가 그대로 유지된다.
 
-- `flex-basis`  
+- `flex-basis`(메인축)  
   기본값 auto  
   item의 초기 크기 지정.
 
 - `flex`  
   `flex-grow` `flex-shrink` `flex-basis` 단축속성
 
-- `align-self`  
+- `align-self`(교차축)  
   개별 item의 정렬 지정.  
   _auto, flex-start, flex-end, center, baseline, stretch_
 
