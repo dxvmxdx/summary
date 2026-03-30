@@ -213,7 +213,7 @@
 ### item에 지정하는 속성
 
 - `grid-row-start`, `grid-row-end`, `grid-column-start`, `grid-column-end`  
-  아이템의 시작위치와 끝위치를 지정할 수 있다.
+  아이템의 시작위치와 끝위치를 지정할 수 있다. (feat. grid line)
 
 - `grid-row`  
   `grid-row-start` / `grid-row-end` 단축속성
