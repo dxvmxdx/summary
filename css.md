@@ -265,7 +265,7 @@
 /* 수직 정렬 */
 .child {
   height: 100%;
-  line-height: 100px; /* 부모 요소 height */
+  line-height: 100px; /* 부모 요소 height 값 */
 }
 ```
 
