@@ -743,7 +743,8 @@ checkMail()
 ## 10-2. async
 
 함수 앞에 `async` 키워드를 붙이면 비동기 함수가 되고, 프로미스를 반환한다.  
-async 함수 내에서 `await` 키워드를 쓸 수 있는데, **`await` 뒤에 오는 프로미스를 반환하는 비동기 작업이 완료될**까지 async 함수의 실행을 중단시킨다.
+async 함수 내에서 `await` 키워드를 쓸 수 있는데, **`await` 뒤에 오는 프로미스를 반환하는 비동기 작업이 완료될**까지 async 함수의 실행을 중단시킨다.  
+⚠️ `await` 연산자는 결과값을 반환한다. 만약 비동기 작업이 에러를 발생시킨다면 코드 실행이 멈추기 때문에 에러 처리를 해줘야 한다.
 
 ```js
 function resolveAfter2Seconds() {
@@ -884,36 +885,34 @@ console.log(increse1 === increse2); // false
 
 함수 호출 방식에 따라 this에 바인딩 되는 객체가 **동적**으로 결정된다.
 
-1. 일반 함수를 호출할 때 함수 내부의 `this`는 전역 객체(브라우저-window, 노드-globalThis)를 가리킨다.  
-   (strict mode 경우 undefined)
+1. global scope에서 `this`는 전역 객체(`window`)를 가리킨다.
 
-2. 메소드로 호출 시 메소드 내부의 `this`는 해당 메소드를 호출한 객체를 가리킨다.
+2. 함수 내부에서의 `this`는 호출 방식에 따라 달라진다. (`this`는 함수를 호출한 객체이다.)
+   - 전역 범위에서 호출한 함수 내부의 `this`는 전역 객체를 가리킨다.
+     단, strict mode인 경우에는 `undefined`로 바인딩된다.
 
-   ```js
-   const foo = {
-     a: 20,
-     bar() {
-       console.log(this.a);
-     },
-   };
+     ```js
+     function func() {
+       console.log(this);
+     }
+     func(); // = window.func(); --> this: window 객체
+     ```
 
-   foo.bar(); // 20
-   setTimeout(foo.bar, 1); // undefined
-   ```
+   - 객체의 메소드로 호출한 메소드 내부의 `this`는 해당 메소드를 호출한 객체를 가리킨다.
 
-3. 생성자함수 또는 클래스로 생성한 객체 메서드로 호출 시, 메서드 내부의 `this`는 인스턴스를 가리킨다.
-   ```js
-   class C {
-     a = 1;
-     autoBoundMethod = () => {
-       console.log(this.a);
+     ```js
+     function bar() {
+       console.log(this);
+     }
+     const foo = {
+       a: 20,
+       bar,
      };
-   }
-   const c = new C();
-   c.autoBoundMethod(); // 1
-   const { autoBoundMethod } = c;
-   autoBoundMethod(); // 1
-   ```
+
+     foo.bar(); // foo 객체
+     const bar2 = foo.bar;
+     bar2(); // window 객체 ‼️
+     ```
 
 <br>
 
@@ -926,11 +925,11 @@ const foo = {
   a: 20,
   bar() {
     setTimeout(() => {
-      console.log(this.a);
+      console.log(this);
     }, 1);
   },
 };
-foo.bar(); // 20
+foo.bar(); // foo 객체
 ```
 
 ```js
