@@ -10,6 +10,14 @@
    3-1. [useEffect](#3-1-useeffect)
 4. [context](#4-context)  
    4-1. [useContext](#4-1-usecontext)
+5. [CSS](#5-css)  
+   5-1. [PostCSS](#5-1-postcss)  
+   5-2. [tailwindcss](#5-2-tailwindcss)
+6. [react router](#6-react-router)  
+   6-1. [Routing](#6-1-routing)  
+   6-2. [Navigating](#6-2-navigating)
+7. [TanStack 쿼리](#7-tanstack-쿼리)  
+   7-1. [Queries](#7-1-queries)
 
 <br>
 <br>
@@ -378,3 +386,324 @@ export function DarkModeProvider({ children }) {
 <br>
 <br>
 <br>
+
+# 5. CSS
+
+## 5-1. PostCSS
+
+css를 모듈별로 관리해준다.
+
+`파일명.module.css`로 파일을 만들고, 사용하고자 하는 컴포넌트 파일에서 import해 사용한다.  
+import 한 스타일은 해당 컴포넌트 내에서만 유효하게 동작한다.
+
+```jsx
+import styles from './Header.module.css';
+
+export default function Header() {
+  return <header className={styles.header}>...</header>;
+}
+```
+
+<br>
+<br>
+<br>
+
+## 5-2. tailwindcss
+
+### 설치
+
+```shell
+yarn add -D tailwindcss @tailwindcss/vite
+```
+
+vite.config.js 파일에 plugin 추가
+
+```js
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [tailwindcss()],
+});
+```
+
+index.css 파일 최상단에 import
+
+```css
+@import 'tailwindcss';
+```
+
+vscode 확장프로그램으로 'Tailwind CSS IntelliSense' 설치
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 6. react router
+
+### 설치
+
+```shell
+npx create-react-router@latest <프로젝트 이름>
+cd <프로젝트 이름>
+npm i
+npm run dev
+```
+
+<br>
+
+## 6-1. Routing
+
+① app/routes 경로에 페이지 컴포넌트 생성.  
+② app/routes.ts 파일에서 경로를 설정해준다.
+
+```ts
+import { type RouteConfig, index, route } from '@react-router/dev/routes';
+
+export default [
+  index('routes/home.tsx'),
+  route('about', 'routes/about.tsx'), // 추가
+] satisfies RouteConfig;
+```
+
+<br>
+
+### Nested Routes
+
+app/routes.ts 파일에서 경로를 설정해준다.
+
+```ts
+import { type RouteConfig, index, route } from '@react-router/dev/routes';
+
+export default [
+  route('/', 'routes/home.tsx', [
+    index('dashbord/dashbord.tsx'),
+    route('about', 'routes/about.tsx'),
+  ]),
+] satisfies RouteConfig;
+```
+
+#### Outlet
+
+부모 페이지에서 자식 페이지가 렌더링 될 부분을 `<Outlet />`으로 넣어줌.
+
+```tsx
+// home.tsx
+export default function Home() {
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
+}
+```
+
+<br>
+
+### Dynamic Segments
+
+① app/routes.ts 파일에서 경로를 설정해준다.
+
+```ts
+import { type RouteConfig, index, route } from '@react-router/dev/routes';
+
+export default [
+  route('/', 'routes/home.tsx', [
+    index('dashbord/dashbord.tsx'),
+    route('teams', 'routes/teams.tsx'),
+    route('teams/:teamId', 'routes/team.tsx'), // teamId
+  ]),
+] satisfies RouteConfig;
+```
+
+② `params`로 path segment를 가져올 수 있다.
+
+```tsx
+import type { Route } from './+types/team';
+
+export default function Team({ params }: Route.ComponentProps) {
+  return <div>{params.teamId}</div>;
+}
+```
+
+<br>
+<br>
+<br>
+
+## 6-2. Navigating
+
+### 정적
+
+`<Link>`를 이용해 이동할 페이지 연결
+
+```tsx
+import { Link } from 'react-router';
+
+export function Navbar() {
+  return (
+    <nav>
+      <Link to="/">Welcome</Link>
+      <Link to="/about">ABOUT</Link>
+    </nav>
+  );
+}
+```
+
+<br>
+
+### 동적
+
+`useNavigate()` 훅을 이용.
+
+```tsx
+// routes/team.tsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
+
+export default function Teams() {
+  const [text, setText] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setText('');
+    navigate(`/teams/${text}`); // 이동
+  };
+
+  return (
+    <div>
+      Teams
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="team id?"
+          value={text}
+          onChange={handleChange}
+        />
+      </form>
+    </div>
+  );
+}
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 7. TanStack 쿼리
+
+비동기 상태 관리 라이브러리
+
+### 설치
+
+```shell
+npm i @tanstack/react-query
+```
+
+<br>
+
+### Usage
+
+```jsx
+// App.js
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// ① Create a client
+const queryClient = new QueryClient();
+
+function App() {
+  return (
+    // ② Provide the client to your App
+    <QueryClientProvider client={queryClient}>
+      <Todos />
+    </QueryClientProvider>
+  );
+}
+
+export default App;
+```
+
+<br>
+<br>
+<br>
+
+## 7-1. Queries
+
+### useQuery
+
+```js
+const result = useQuery({ queryKey, queryFn });
+```
+
+- queryKey  
+  쿼리를 식별하는 고유한 값으로, 배열 형태로 지정한다.
+- queryFn  
+  데이터를 가져오는 비동기 함수로 반드시 데이터를 반환하거나 오류를 던져야 한다.
+- staleTime (Optional)  
+   캐시 데이터 상태를 관리한다. (fresh-stale)
+
+  🗣️ 만약, 쿼리키와 일치하는 캐시된 데이터가 있는 경우 바로 UI 업데이트되고, (캐시된 데이터가 fresh 상태면 여기서 끝) 캐시된 데이터가 stale 상태면 백그라운드에서 네트워크 통신을 통해 데이터를 받아온 다음 캐시 데이터를 업데이트해주고 UI도 업데이트 해준다. (그 전과 데이터와 비교해서 다른 부분만 업데이트되고, 동일하다면 UI 업데이트 되지 않음)
+
+<br>
+
+```jsx
+import { useQuery } from '@tanstack/react-query';
+import { getTodos } from '../my-api';
+
+function Todos() {
+  // Queries
+  const query = useQuery({ queryKey: ['todos'], queryFn: getTodos });
+
+  return (
+    <div>
+      <ul>
+        {query.data?.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+<br>
+
+### 캐시 데이터 갱신
+
+```jsx
+import { useQueryClient, useQuery } from '@tanstack/react-query';
+import { getTodos } from '../my-api';
+
+function Todos() {
+  // ① Access the client
+  const queryClient = useQueryClient();
+
+  const query = useQuery({ queryKey: ['todos'], queryFn: getTodos });
+
+  return (
+    <div>
+      <ul>
+        {query.data?.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+      <button
+        onClick={() => {
+          // ② ['todos'] 쿼리 키를 가진 모든 캐시 무효화시킴
+          queryClient.invalidateQueries({ queryKey: ['todos'] });
+        }}
+      >
+        업데이트
+      </button>
+    </div>
+  );
+}
+```
