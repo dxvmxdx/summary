@@ -18,6 +18,7 @@
    6-2. [Navigating](#6-2-navigating)
 7. [TanStack 쿼리](#7-tanstack-쿼리)  
    7-1. [Queries](#7-1-queries)
+8. [axios](#8-axios)
 
 <br>
 <br>
@@ -38,24 +39,32 @@ nvm use v24.18.0
 npm install -g npm@latest
 node -v
 npm -v
-npm install -g corepack
-yarn -v
-yarn set version stable
-yarn -v
 
 
-yarn create vite <app name>
+npm create vite@latest
 cd <app name>
 git init
 git add .gitignore *
 git commit -m "initial project setup"
 
-yarn install
-yarn dev
+npm i
+npm run dev
 ```
 
 ① App.jsx 정리  
 ② index.css, App.css 파일 안의 코드 삭제
+
+<br>
+
+### 환경변수
+
+vite에서 환경변수는 `.env` 파일에 작성하면 된다.
+
+```
+VITE_<key-name>=값
+```
+
+가져올 때는 `import.meta.env.VITE_<key-name>` 방식으로 가져오면 된다.
 
 <br>
 <br>
@@ -478,8 +487,10 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
 
 export default [
   route('/', 'routes/home.tsx', [
-    index('dashbord/dashbord.tsx'),
-    route('about', 'routes/about.tsx'),
+    index('routes/videos.tsx', { id: 'videos-popular1' }),
+    route('videos', 'routes/videos.tsx', { id: 'videos-popular2' }),
+    route('videos/:search', 'routes/videos.tsx', { id: 'videos-search' }),
+    route('videos/watch/:videoId', 'routes/video-detail.tsx'),
   ]),
 ] satisfies RouteConfig;
 ```
@@ -518,7 +529,7 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-② `params`로 path segment를 가져올 수 있다.
+② `params`로 path segment를 가져올 수 있다. (또는 `useParams()` 훅으로 가져올 수 있다.)
 
 ```tsx
 import type { Route } from './+types/team';
@@ -592,6 +603,37 @@ export default function Teams() {
 }
 ```
 
+#### 데이터 전달
+
+이동할 때 데이터를 같이 전달해주고 싶다면 `state` 옵션에 전달해주면 된다.
+
+```tsx
+export default function VideoCard({ video }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/videos/watch/${video.id}`, {
+      state: { video },
+    });
+  };
+
+  return <>...</>;
+}
+```
+
+받을 때는 `useLocation()` 훅으로 데이터를 가져온다.
+
+```tsx
+import { useLocation } from 'react-router';
+
+export default function VideoDetail() {
+  const {
+    state: { video },
+  } = useLocation();
+
+  return <>...</>;
+}
+```
+
 <br>
 <br>
 <br>
@@ -611,6 +653,8 @@ npm i @tanstack/react-query
 <br>
 
 ### Usage
+
+사용하고자 하는 컴포넌트의 최상위 컴포넌트에 `QueryClientProvider`로 감싸준다.
 
 ```jsx
 // App.js
@@ -660,15 +704,23 @@ import { getTodos } from '../my-api';
 
 function Todos() {
   // Queries
-  const query = useQuery({ queryKey: ['todos'], queryFn: getTodos });
+  const {
+    isLoading,
+    error,
+    data: todos,
+  } = useQuery({ queryKey: ['todos'], queryFn: getTodos });
 
   return (
     <div>
-      <ul>
-        {query.data?.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
-        ))}
-      </ul>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Something is wrong...</p>}
+      {todos && (
+        <ul>
+          {todos.map((todo) => (
+            <Todo key={todo.id} todo={todo} />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -705,5 +757,88 @@ function Todos() {
       </button>
     </div>
   );
+}
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 8. axios
+
+### 설치
+
+```shell
+npm i axios
+```
+
+<br>
+
+### usage
+
+```jsx
+import { getSearch } from '../api/youtube.js';
+
+export default function Videos() {
+  const { search } = useParams();
+  const {
+    isLoading,
+    error,
+    data: videos,
+  } = useQuery({
+    queryKey: ['videos', search],
+    queryFn: () => getSearch(search), // 컴포넌트 내에서 네트워크 로직을 보여주지 않도록 함.
+    staleTime: 1000 * 60 * 1,
+  });
+
+  return <>...</>;
+}
+```
+
+```js
+// src/api/youtube.js
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: 'https://youtube.googleapis.com/youtube/v3',
+  params: {
+    key: import.meta.env.VITE_YOUTUBE_API_KEY,
+  },
+});
+
+export async function getSearch(search: string) {
+  return search ? getSearchByKeyword(search) : getPopular();
+}
+
+async function getSearchByKeyword(search) {
+  return apiClient
+    .get('/search', {
+      params: {
+        part: 'snippet',
+        type: 'video',
+        maxResults: 25,
+        q: search,
+      },
+    })
+    .then((res) =>
+      res.data.items.map((item) => ({ ...item, id: item.id.videoId })),
+    )
+    .catch(console.log);
+}
+
+async function getPopular() {
+  return apiClient
+    .get('/videos', {
+      params: {
+        part: 'snippet',
+        chart: 'mostPopular',
+        regionCode: 'KR',
+        maxResults: 25,
+      },
+    })
+    .then((res) => res.data.items)
+    .catch(console.log);
 }
 ```
