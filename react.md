@@ -17,8 +17,14 @@
    6-1. [Routing](#6-1-routing)  
    6-2. [Navigating](#6-2-navigating)
 7. [TanStack 쿼리](#7-tanstack-쿼리)  
-   7-1. [Queries](#7-1-queries)
+   7-1. [Queries](#7-1-queries)  
+   7-2. [Mutations](#7-2-mutations)  
+   7-3. [커스텀 훅으로 관리](#7-3-커스텀-훅으로-관리)
 8. [axios](#8-axios)
+9. [Firebase](#9-firebase)  
+   9-1. [setup](#9-1-setup)  
+   9-2. [인증](#9-2-인증)  
+   9-3. [데이터베이스](#9-3-데이터베이스)
 
 <br>
 <br>
@@ -763,6 +769,85 @@ function Todos() {
 <br>
 <br>
 <br>
+
+## 7-2. Mutations
+
+데이터를 생성/수정/삭제하거나 서버에 side-effect를 일으키는 데 사용된다.
+
+```tsx
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+export default function NewProduct() {
+  const queryClient = useQueryClient();
+
+  const addProduct = useMutation({
+    mutationFn: ({ product, url }) => addNewProduct(product, url),
+    onSuccess: () => {
+      // 성공하면 해당 키에 대한 캐시 데이터 갱신
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsUploading(true);
+    uploadImage(file)
+      .then((url) => {
+        addProduct.mutate(
+          { product, url },
+          {
+            onSuccess: () => {
+              setSuccess('성공적으로 제품이 추가되었습니다.');
+              setTimeout(() => {
+                setSuccess(null);
+              }, 4000);
+            },
+          },
+        );
+      })
+      .finally(() => setIsUploading(false));
+  };
+
+  return <></>;
+}
+```
+
+<br>
+<br>
+<br>
+
+## 7-3. 커스텀 훅으로 관리
+
+동일 쿼리 키에 대한 작업(CRUD)이 코드 여기저기 있으면 관리하기 힘드므로 훅으로 만들어 관리하는 것이 좋다.
+
+```tsx
+// app/hooks/useProducts.tsx
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { addNewProduct, getProducts } from '~/api/firebase';
+
+export default function useProducts() {
+  const queryClient = useQueryClient();
+
+  const productsQuery = useQuery({
+    queryKey: ['products'],
+    queryFn: getProducts,
+    staleTime: 1000 * 60,
+  });
+
+  const addProduct = useMutation({
+    mutationFn: ({ product, url }) => addNewProduct(product, url),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
+  return { productsQuery, addProduct };
+}
+```
+
+<br>
+<br>
+<br>
 <br>
 <br>
 
@@ -825,7 +910,7 @@ async function getSearchByKeyword(search) {
     .then((res) =>
       res.data.items.map((item) => ({ ...item, id: item.id.videoId })),
     )
-    .catch(console.log);
+    .catch(console.error);
 }
 
 async function getPopular() {
@@ -839,6 +924,220 @@ async function getPopular() {
       },
     })
     .then((res) => res.data.items)
-    .catch(console.log);
+    .catch(console.error);
+}
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 9. Firebase
+
+## 9-1. setup
+
+#### 설치
+
+```shell
+npm i firebase
+```
+
+#### 초기화
+
+```ts
+// app/api/firebase.ts
+import { initializeApp } from 'firebase/app';
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DB_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+```
+
+<br>
+<br>
+<br>
+
+## 9-2. 인증
+
+firebase와 관련된 로직을 컴포넌트와 분리해서 작업한다.
+
+```ts
+// app/api/firebase.ts
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+
+const provider = new GoogleAuthProvider();
+const auth = getAuth();
+
+export async function login() {
+  return signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      return user;
+    })
+    .catch(console.error);
+}
+
+export async function logout() {
+  return signOut(auth)
+    .then(() => null)
+    .catch(console.error);
+}
+```
+
+```tsx
+import { login, logout, onUserStateChange } from '~/api/firebase';
+import { useState } from 'react';
+
+export default function Navbar() {
+  const [user, setUser] = useState();
+
+  const handleLogin = () => {
+    login().then(setUser);
+  };
+
+  const handleLogout = () => {
+    logout().then(setUser);
+  };
+
+  return (
+    <header>
+      <Link to="/">
+        <img src="/images/logo.svg" alt="logo" />
+      </Link>
+      <nav>
+        {!user && <button onClick={handleLogin}>Login</button>}
+        {user && <button onClick={handleLogout}>LogOut</button>}
+      </nav>
+    </header>
+  );
+}
+```
+
+<br>
+
+### observer
+
+페이지가 리프레시되면 user 정보가 null로 초기화되는데, 이를 해결하기 위해 observer를 연결해준다.  
+(이 observer는 로그인 상태가 변경될 때마다 호출되며, 로그인에 성공하면 user 정보를 얻을 수 있다.)  
+로그인 세션이 남아있거나 또는 사용자가 로그인을 했다면 user 정보가 있어서 마운트 될 때 user 정보를 얻을 수 있다.
+
+```ts
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+
+// user 정보를 반환할 필요 없음.
+export function login() {
+  signInWithPopup(auth, provider).catch(console.error);
+}
+
+// 역시 마찬가지로 user 정보 값을(null) 반환할 필요 없음.
+export function logout() {
+  signOut(auth).catch(console.error);
+}
+
+export function onUserStateChange(callback) {
+  // user 상태가 바뀔 때마다 onAuthStateChanged 메소드의 두번째 파라미터의 콜백함수인 관찰자 함수가 실행됨.
+  onAuthStateChanged(auth, (user) => {
+    callback(user);
+  });
+}
+```
+
+```tsx
+import { login, logout, onUserStateChange } from '~/api/firebase';
+import { useEffect, useState } from 'react';
+
+export default function Navbar() {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    onUserStateChange(setUser);
+  }, []);
+
+  return (
+    <header>
+      <Link to="/">
+        <img src="/images/logo.svg" alt="logo" />
+      </Link>
+      <nav>
+        {!user && <button onClick={login}>Login</button>}
+        {user && <button onClick={logout}>LogOut</button>}
+      </nav>
+    </header>
+  );
+}
+```
+
+<br>
+<br>
+<br>
+
+## 9-3. 데이터베이스
+
+### READ
+
+```ts
+import { get, getDatabase, ref } from 'firebase/database';
+
+const database = getDatabase(app);
+
+export async function getProducts() {
+  return get(ref(database, 'products')).then((snapshot) => {
+    if (snapshot.exists()) {
+      return Object.values(snapshot.val());
+    }
+    return [];
+  });
+}
+```
+
+<br>
+
+### WRITE
+
+```ts
+import { getDatabase, ref, set } from 'firebase/database';
+import { v4 as uuid } from 'uuid';
+
+const database = getDatabase(app);
+
+export async function addNewProduct(product, image) {
+  const id = uuid();
+  return set(ref(database, `products/${id}`), {
+    ...product,
+    id,
+    price: parseInt(product.price),
+    image,
+    options: product.options.split(','),
+  });
+}
+```
+
+<br>
+
+### DELETE
+
+```ts
+import { getDatabase, ref, remove } from 'firebase/database';
+
+export async function removeFromCart(userId, productId) {
+  return remove(ref(database, `carts/${userId}/${productId}`));
 }
 ```
