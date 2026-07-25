@@ -987,11 +987,6 @@ console.log(fn() === obj); // true
 
 <br>
 
-#### Event Loop
-
-콜스택에 현재 실행중인 컨텍스트가 있는지, 콜백 큐에 대기 중인 콜백 함수가 있는지 주기적으로 관찰한다.  
-콜스택이 비어 있으면 콜백 큐에서 대기 중인 콜백 함수를 순서에 맞춰 콜스택에 push한다.
-
 #### Callback Queue
 
 비동기 작업이 완료된 후 실행될 콜백 함수가 대기하는 큐 (FIFO)
@@ -1062,7 +1057,7 @@ console.log('End');
 // End
 // Promise1
 // Promise2
-// animation frames
+// animation frames <- 호출되는 순서 다를 수 있음
 // Timeout
 ```
 
