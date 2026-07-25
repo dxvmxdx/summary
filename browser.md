@@ -68,8 +68,7 @@ section.appendChild(category);
 > 💡 불필요한 노드 생성 NO!
 
 브라우저는 스타일시트, 스크립트 또는 포함된 이미지 참조 같은 외부 리소스 링크를 찾을 때마다 요청을 보냅니다.
-불러온 리소스를 처리할 때까지 나머지 HTML 파싱이 멈춘다.  
-브라우저는 CSS 객체 모델을 구축할 때까지 HTML을 파싱한다.
+불러온 리소스를 처리할 때까지 나머지 HTML 파싱이 멈춘다.
 
 DOM과 CSSOM이 완료되면 브라우저는 렌더 트리를 생성합니다. 그리고 보여지는 모든 콘텐츠의 스타일을 계산합니다.
 
@@ -145,7 +144,7 @@ document.documentElement.clientHeight;
 
 ### target vs currentTarget
 
-`event.target`: 이벤트가 발생한 요소  
+`event.target` (=`this`): 이벤트가 발생한 요소  
 `event.currentTarget`: 이벤트가 바인딩된 요소
 
 <br>
