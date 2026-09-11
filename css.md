@@ -1,11 +1,12 @@
 # Contents
 
-1. [box model](#1-box-model)
-2. [속성](#2-속성)  
-   2-1. [position](#2-1-position)  
-   2-2. [flexbox](#2-2-flexbox)  
-   2-3. [grid](#2-3-grid)
-3. [정렬](#3-정렬)
+1. [CSS](#1-css)
+2. [box model](#2-box-model)
+3. [속성](#3-속성)  
+   3-1. [position](#3-1-position)  
+   3-2. [flexbox](#3-2-flexbox)  
+   3-3. [grid](#3-3-grid)
+4. [정렬](#4-정렬)
 
 <br>
 <br>
@@ -13,7 +14,17 @@
 <br>
 <br>
 
-# 1. box model
+# 1. CSS
+
+Cascading Style Sheets  
+스타일이 우선순위에(Author Style > User Style > Browser Style) 맞게 연속적으로 적용
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# 2. box model
 
 ### border와 outline 차이
 
@@ -39,9 +50,9 @@
 <br>
 <br>
 
-# 2. 속성
+# 3. 속성
 
-## 2-1. position
+## 3-1. position
 
 - relative  
   요소를 일반적인 문서 흐름에 따라 배치.  
@@ -49,7 +60,7 @@
 
 - absolute  
   요소를 일반적인 문서 흐름에서 제거.  
-  position 속성값이 `static`이 아닌 가장 가까운 조상을 기준으로 이동. (없는 경우 `<html>` 기준)  
+  position 속성값이 `static`이 아닌 가장 가까운 조상을 기준으로 이동. (없는 경우 초기 컨테이너 블록 기준)  
   ⚠️ 요소의 `display` 속성값이 `inline-block`으로 변경됨.
 
 - fixed  
@@ -65,7 +76,7 @@
 <br>
 <br>
 
-## 2-2. flexbox
+## 3-2. flexbox
 
 [참고 사이트](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
@@ -135,7 +146,7 @@
 <br>
 <br>
 
-## 2-3. grid
+## 3-3. grid
 
 [참고 사이트](https://css-tricks.com/css-grid-layout-guide/)
 
@@ -242,7 +253,7 @@
 <br>
 <br>
 
-# 3. 정렬
+# 4. 정렬
 
 ### block element
 
